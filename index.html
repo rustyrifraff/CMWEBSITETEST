@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C+M — Public Relations, Branding &amp; Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#131315;
+    --navy-deep:#050506;
+    --gold:#c1443b;
+    --gold-light:#c9cdd4;
+    --cream:#f2f2f4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:radial-gradient(circle at 50% 40%, var(--navy) 0%, var(--navy-deep) 75%);
+    overflow:hidden;
+  }
+
+  /* Faint mixed-media backdrop: broadcast rings, layout grid, halftone press dots, film grain */
+  .bg-rings, .bg-grid, .bg-halftone, .bg-grain, .bg-vignette{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .bg-rings{
+    background:repeating-radial-gradient(
+      circle at 50% 42%,
+      transparent 0,
+      transparent 70px,
+      rgba(201,205,212,.04) 71px,
+      transparent 72px,
+      transparent 170px
+    );
+  }
+  .bg-grid{
+    background-image:
+      linear-gradient(rgba(201,205,212,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,205,212,.028) 1px, transparent 1px);
+    background-size:110px 110px;
+    background-position:center;
+  }
+  .bg-halftone{
+    background-image:radial-gradient(rgba(201,205,212,.07) 1px, transparent 1.3px);
+    background-size:22px 22px;
+    background-position:center;
+    -webkit-mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 62%);
+    mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 62%);
+  }
+  .bg-grain{
+    opacity:.5;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  }
+  .bg-vignette{
+    background:radial-gradient(circle at 50% 42%, transparent 0%, transparent 32%, rgba(10,10,10,.5) 72%, rgba(10,10,10,.88) 100%);
+  }
+
+  /* Faint illustrative line-art evoking each service line + digital/web prestige */
+  .bg-icons{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .bg-icons svg{
+    position:absolute;
+    fill:none;
+    stroke:var(--gold-light);
+    stroke-width:.7;
+    stroke-linecap:butt;
+    stroke-linejoin:miter;
+    opacity:.1;
+  }
+  .bg-icons svg .tick line{ stroke-width:.6; }
+  .icon-network{ top:6%; right:4%; width:min(22vw, 260px); }
+  .icon-signal{ top:7%; left:4.5%; width:min(15vw, 190px); }
+  .icon-chart{ bottom:7%; left:5%; width:min(19vw, 230px); }
+  .icon-quill{ bottom:8%; right:5.5%; width:min(15vw, 180px); }
+  @media (max-width:720px){
+    .bg-icons svg{ opacity:.07; }
+    .icon-network{ width:34vw; }
+    .icon-signal{ width:24vw; }
+    .icon-chart{ width:30vw; }
+    .icon-quill{ width:24vw; }
+  }
+
+  .stage{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:translateY(-9vh);
+  }
+  .mark{
+    font-family:'Big Shoulders Display', system-ui, sans-serif;
+    font-weight:800;
+    font-size:clamp(64px, min(15.5vw, 10.5vh), 190px);
+    letter-spacing:-.045em;
+    color:var(--cream);
+    text-align:center;
+    line-height:1;
+    user-select:none;
+    display:flex;
+    align-items:baseline;
+  }
+  .mark .plus{
+    color:var(--gold);
+    padding:0 .12em;
+    display:inline-block;
+    font-weight:700;
+    opacity:0;
+    transform:scale(.15) rotate(-90deg);
+    transition:opacity .4s ease 0s, transform .65s cubic-bezier(.34,1.56,.64,1) 0s;
+  }
+  .mark.revealed .plus{
+    opacity:1;
+    transform:scale(1) rotate(0deg);
+  }
+  .letter{
+    position:relative;
+    display:inline-block;
+    transition:transform 1s cubic-bezier(.16,1,.3,1) .2s;
+  }
+  .glyph{
+    display:inline-block;
+    transform:scaleY(1.22) scaleX(0.84);
+    transform-origin:center;
+  }
+  #letter-c{transform:translateX(.34em);}
+  #letter-m{transform:translateX(-.34em);}
+  .mark.revealed #letter-c,
+  .mark.revealed #letter-m{transform:translateX(0);}
+
+  /* Vertical name cascades, anchored beneath each initial */
+  .vertical-name{
+    position:absolute;
+    top:100%;
+    left:50%;
+    transform:translateX(-50%);
+    margin-top:2.1vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    opacity:1;
+    transition:opacity .8s ease;
+  }
+  .vertical-name div{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(15px, min(2.8vw, 2.5vh), 28px);
+    letter-spacing:.14em;
+    color:var(--gold-light);
+    line-height:1.35;
+  }
+
+  /* Horizontal descriptor words, anchored outward from each initial */
+  .word-cycle{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    white-space:nowrap;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(16px, min(3vw, 3.4vh), 30px);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    opacity:0;
+    transition:opacity .6s ease;
+  }
+  .word-left{right:100%;margin-right:26px;text-align:right;}
+  .word-right{left:100%;margin-left:26px;text-align:left;}
+
+  /* Click-anywhere gate into the rest of the site */
+  .enter-site{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    cursor:pointer;
+  }
+  .enter-hint{
+    position:fixed;
+    left:50%;
+    bottom:6vh;
+    transform:translateX(-50%);
+    z-index:4;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    opacity:0;
+    transition:opacity 1s ease;
+    pointer-events:none;
+  }
+  .enter-hint.shown{ opacity:.55; animation:enter-pulse 2.4s ease-in-out infinite; }
+  .enter-hint .arrow{
+    display:inline-block;
+    transition:transform .3s ease;
+  }
+  .enter-site:hover ~ .enter-hint{ opacity:.9; }
+  .enter-site:hover ~ .enter-hint .arrow{ transform:translateX(4px); }
+  @keyframes enter-pulse{
+    0%, 100%{ opacity:.4; }
+    50%{ opacity:.85; }
+  }
+
+  .music-toggle{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    z-index:6;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:rgba(242,242,244,.06);
+    border:1px solid rgba(201,205,212,.35);
+    color:var(--gold-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .music-toggle:hover{
+    background:rgba(242,242,244,.12);
+    border-color:rgba(201,205,212,.6);
+  }
+  .music-toggle svg{ width:16px; height:16px; }
+</style>
+</head>
+<body>
+
+<a class="enter-site" href="home.html" aria-label="Enter site"></a>
+<div class="enter-hint" id="enter-hint">Enter Site<span class="arrow">→</span></div>
+
+<button class="music-toggle" aria-label="Play background music" type="button">
+  <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+  <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+</button>
+
+<div class="bg-rings"></div>
+<div class="bg-grid"></div>
+<div class="bg-halftone"></div>
+
+<div class="bg-icons" aria-hidden="true">
+  <!-- Digital / web prestige: globe grid with connected network nodes -->
+  <svg class="icon-network" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="38"/>
+    <ellipse cx="50" cy="50" rx="38" ry="13"/>
+    <line x1="12" y1="50" x2="88" y2="50"/>
+    <line x1="50" y1="12" x2="50" y2="88"/>
+    <path d="M20 30 A45 45 0 0 1 80 30"/>
+    <path d="M20 70 A45 45 0 0 0 80 70"/>
+    <line x1="50" y1="50" x2="27" y2="30"/>
+    <line x1="50" y1="50" x2="74" y2="66"/>
+    <line x1="50" y1="50" x2="70" y2="27"/>
+    <g class="tick"><line x1="47" y1="50" x2="53" y2="50"/><line x1="50" y1="47" x2="50" y2="53"/></g>
+    <g class="tick"><line x1="24" y1="30" x2="30" y2="30"/><line x1="27" y1="27" x2="27" y2="33"/></g>
+    <g class="tick"><line x1="71" y1="66" x2="77" y2="66"/><line x1="74" y1="63" x2="74" y2="69"/></g>
+    <g class="tick"><line x1="67" y1="27" x2="73" y2="27"/><line x1="70" y1="24" x2="70" y2="30"/></g>
+  </svg>
+
+  <!-- Public relations / broadcast: signal tower with radiating waves -->
+  <svg class="icon-signal" viewBox="0 0 100 100">
+    <line x1="50" y1="42" x2="50" y2="92"/>
+    <line x1="36" y1="92" x2="64" y2="92"/>
+    <path d="M34 31 A19 19 0 0 1 66 31"/>
+    <path d="M25 22 A31 31 0 0 1 75 22"/>
+    <path d="M16 13 A43 43 0 0 1 84 13"/>
+    <g class="tick"><line x1="47" y1="36" x2="53" y2="36"/><line x1="50" y1="33" x2="50" y2="39"/></g>
+  </svg>
+
+  <!-- Strategy / growth: ascending trend line -->
+  <svg class="icon-chart" viewBox="0 0 100 100">
+    <polyline points="8,88 30,62 48,70 70,34 90,14"/>
+    <polyline points="76,14 90,14 90,28"/>
+    <g class="tick"><line x1="27" y1="62" x2="33" y2="62"/><line x1="30" y1="59" x2="30" y2="65"/></g>
+    <g class="tick"><line x1="45" y1="70" x2="51" y2="70"/><line x1="48" y1="67" x2="48" y2="73"/></g>
+    <g class="tick"><line x1="67" y1="34" x2="73" y2="34"/><line x1="70" y1="31" x2="70" y2="37"/></g>
+  </svg>
+
+  <!-- Branding / voice: single confident pen stroke -->
+  <svg class="icon-quill" viewBox="0 0 100 100">
+    <path d="M80 12 C 56 22, 32 52, 20 86"/>
+    <path d="M16 90 C 24 88, 32 84, 38 76"/>
+    <g class="tick"><line x1="77" y1="12" x2="83" y2="12"/><line x1="80" y1="9" x2="80" y2="15"/></g>
+  </svg>
+</div>
+
+<div class="bg-grain"></div>
+<div class="bg-vignette"></div>
+
+<div class="stage">
+  <div class="mark">
+    <span class="letter" id="letter-c"><span class="glyph">C</span>
+      <div class="vertical-name" id="name-c"></div>
+    </span>
+    <span class="plus">+</span>
+    <span class="letter" id="letter-m"><span class="glyph">M</span>
+      <div class="vertical-name" id="name-m"></div>
+    </span>
+  </div>
+  <div class="word-cycle word-left" id="word-c"></div>
+  <div class="word-cycle word-right" id="word-m"></div>
+</div>
+
+<script>
+  var nameC = "HAIYABHAT";   // continues after the visible "C"
+  var nameM = "CCULLION";    // continues after the visible "M"
+  var wordsC = ["Creative", "Communications"];
+  var wordsM = ["Media", "Managing Brands"];
+
+  function buildVertical(id, word){
+    var el = document.getElementById(id);
+    el.innerHTML = '';
+    word.split('').forEach(function(ch, i){
+      var d = document.createElement('div');
+      d.textContent = ch;
+      d.style.opacity = 0;
+      d.style.transform = 'translateY(-6px)';
+      d.style.transition = 'opacity .4s ease, transform .4s ease';
+      d.style.transitionDelay = (i * 70) + 'ms';
+      el.appendChild(d);
+    });
+  }
+
+  function revealVertical(id){
+    document.querySelectorAll('#' + id + ' div').forEach(function(d){
+      d.style.opacity = 1;
+      d.style.transform = 'translateY(0)';
+    });
+  }
+
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  async function runSequence(){
+    var nameCEl = document.getElementById('name-c');
+    var nameMEl = document.getElementById('name-m');
+    var wordCEl = document.getElementById('word-c');
+    var wordMEl = document.getElementById('word-m');
+
+    while (true) {
+      // ---- Phase 1: names cascade down from C and M ----
+      buildVertical('name-c', nameC);
+      buildVertical('name-m', nameM);
+      nameCEl.style.transition = 'none';
+      nameMEl.style.transition = 'none';
+      nameCEl.style.opacity = 1;
+      nameMEl.style.opacity = 1;
+      await sleep(50);
+      revealVertical('name-c');
+      revealVertical('name-m');
+      await sleep(Math.max(nameC.length, nameM.length) * 70 + 500);
+
+      // hold, fully visible
+      await sleep(1100);
+
+      // shade out
+      nameCEl.style.transition = 'opacity .9s ease';
+      nameMEl.style.transition = 'opacity .9s ease';
+      nameCEl.style.opacity = 0;
+      nameMEl.style.opacity = 0;
+      await sleep(1000);
+
+      // ---- Phase 2: descriptor words cycle outward from C and M ----
+      var rounds = Math.max(wordsC.length, wordsM.length);
+      for (var i = 0; i < rounds; i++) {
+        wordCEl.textContent = wordsC[i % wordsC.length];
+        wordMEl.textContent = wordsM[i % wordsM.length];
+        wordCEl.style.opacity = 1;
+        wordMEl.style.opacity = 1;
+        await sleep(1700);
+        wordCEl.style.opacity = 0;
+        wordMEl.style.opacity = 0;
+        await sleep(500);
+      }
+      await sleep(400);
+    }
+  }
+
+  // ---- Intro: C and M start close together, then pull apart to reveal the + ----
+  var markEl = document.querySelector('.mark');
+  setTimeout(function(){
+    markEl.classList.add('revealed');
+  }, 450);
+  setTimeout(function(){
+    runSequence();
+  }, 1650);
+
+  // ---- Enter-site hint fades in once the mark has settled ----
+  setTimeout(function(){
+    document.getElementById('enter-hint').classList.add('shown');
+  }, 2400);
+
+
+</script>
+<script src="music.js"></script>
+
+
+</body>
+</html>
