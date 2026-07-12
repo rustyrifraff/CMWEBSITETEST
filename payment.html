@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Payment Portal — C+M</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<button class="music-toggle" aria-label="Play background music" type="button">
+  <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+  <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+</button>
+
+
+<div class="ticker">
+  <div class="ticker-track">
+    <a href="services/public-relations.html">Public Relations</a><span class="dot">•</span>
+    <a href="services/branding-identity.html">Branding &amp; Identity</a><span class="dot">•</span>
+    <a href="services/crisis-communications.html">Crisis Communications</a><span class="dot">•</span>
+    <a href="services/strategy-positioning.html">Strategy &amp; Positioning</a><span class="dot">•</span>
+    <a href="services/public-relations.html">Public Relations</a><span class="dot">•</span>
+    <a href="services/branding-identity.html">Branding &amp; Identity</a><span class="dot">•</span>
+    <a href="services/crisis-communications.html">Crisis Communications</a><span class="dot">•</span>
+    <a href="services/strategy-positioning.html">Strategy &amp; Positioning</a><span class="dot">•</span>
+  </div>
+</div>
+
+<header>
+  <nav class="nav">
+    <a href="home.html" class="logo serif">C<span>+</span>M</a>
+    <ul class="nav-links">
+      <li><a href="home.html#services">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="home.html#process">Process</a></li>
+      <li><a href="payment.html" class="is-current">Pay Invoice</a></li>
+    </ul>
+    <a href="home.html#billing" class="nav-cta">Request a Quote</a>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="home.html">Home</a> / Client Payment Portal</div>
+    <div class="eyebrow">For Existing Clients</div>
+    <h1>Client Payment Portal</h1>
+    <p>Already have a signed scope with us? Here's how payment works, and where to pay a live invoice securely.</p>
+  </div>
+</section>
+
+<section class="payment-portal">
+  <div class="wrap payment-inner">
+    <div>
+      <div class="section-head">
+        <div class="eyebrow">How Billing Works</div>
+        <h2 style="font-size:24px;">Three steps, no surprises</h2>
+      </div>
+      <ol class="payment-steps">
+        <li>
+          <strong>Scope is signed off</strong>
+          <span>After your intro call and proposal, we agree on a fixed scope, timeline, and price — no open-ended retainers unless you've asked for one.</span>
+        </li>
+        <li>
+          <strong>You receive a secure invoice</strong>
+          <span>We send a Stripe-hosted invoice directly to your email. It's a real, secure payment page — we never ask for card details over email or phone.</span>
+        </li>
+        <li>
+          <strong>Pay online, get a receipt instantly</strong>
+          <span>Pay by card or bank transfer directly on the invoice page. You'll get an emailed receipt the moment payment clears.</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="payment-card">
+      <h3>Have an Invoice Number?</h3>
+      <p>Use the secure payment link included in your invoice email from Stripe. If you can't find it, we're happy to resend it.</p>
+      <a href="#" id="pay-invoice-btn" class="btn btn-primary">Go to My Invoice</a>
+      <div class="payment-note">Payments are processed securely by Stripe. C+M never stores or has access to your card details.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="setup-callout">
+      <strong>Setup note (remove once live):</strong>
+      This page is wired for Stripe but needs your live account connected. Create a free Stripe account at stripe.com, verify your business details, then either (1) turn on Stripe Invoicing and send invoices directly from your dashboard after each quote call — clients will get their own secure payment link by email automatically, or (2) replace the "Go to My Invoice" button's placeholder link with your Stripe Customer Portal or a specific Payment Link. No backend/server is required for either option.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <a href="home.html" class="logo serif" style="color:#f2f2f4;">C<span style="color:var(--gold-light);">+</span>M</a>
+      <p>Public Relations · Branding · Crisis Communications · Strategy</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="services/public-relations.html">Public Relations</a></li>
+      <li><a href="services/branding-identity.html">Branding &amp; Identity</a></li>
+      <li><a href="services/crisis-communications.html">Crisis Communications</a></li>
+      <li><a href="services/strategy-positioning.html">Strategy &amp; Positioning</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="payment.html">Pay Invoice</a></li>
+      <li><a href="mailto:shaunchaiy@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+  <div class="wrap footer-bottom">
+    &copy; 2026 C+M. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // ---- Payment link: replace YOUR-STRIPE-LINK with your real Stripe Customer Portal or Payment Link URL ----
+  (function(){
+    var stripeLink = 'YOUR-STRIPE-LINK';
+    var btn = document.getElementById('pay-invoice-btn');
+    if (stripeLink === 'YOUR-STRIPE-LINK') {
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        alert('Payment link not yet connected. Add your Stripe Customer Portal or Payment Link URL in payment.html to activate this button.');
+      });
+    } else {
+      btn.href = stripeLink;
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+    }
+  })();
+</script>
+
+<script src="music.js"></script>
+</body>
+</html>
